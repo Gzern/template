@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.template.mapper.ITemplateStockMapper">
+
+    <insert id="addTemplateStock" parameterType="TemplateStock">
+        INSERT INTO template_stock (template_id,template_amount,template_suits,template_areas,template_factory,
+        template_store,template_memo,template_borrowed,template_ctime)
+        VALUES (#{templateId},#{templateAmount},#{templateSuits},#{templateAreas},#{templateFactory},#{templateStore},
+                #{templateMemo},#{templateBorrowed},#{templateCtime})
+    </insert>
+
+
+    <update id="updateTemplateStock" parameterType="TemplateStock">
+        UPDATE template_stock
+        SET template_amount=#{templateAmount},template_suits=#{templateSuits},template_borrowed=#{templateBorrowed}
+        WHERE id=#{id};
+    </update>
+
+
+    <select id="findTemplateStock" parameterType="TemplateStock" resultType="TemplateStock">
+        SELECT *
+        FROM template_stock
+        WHERE template_id=#{templateId}
+        AND template_areas=#{templateAreas}
+        AND template_factory=#{templateFactory}
+        AND template_store=#{templateStore}
+    </select>
+
+    <select id="findTemplateStockById" parameterType="Long" resultType="TemplateStock">
+        SELECT *
+        FROM template_stock
+        WHERE id=#{id}
+        for update
+    </select>
+
+    <select id="findTemplateStockByTemplateId" parameterType="java.lang.String" resultType="TemplateStock">
+        SELECT *
+        FROM template_stock
+        WHERE template_id=#{templateId}
+    </select>
+
+    <select id="listTemplateStocksByExample" parameterType="TemplateStock" resultType="TemplateStock">
+        SELECT *
+        FROM template_stock
+        <where>
+            <if test="templateId!=null and templateId!=''">
+                and template_id=#{templateId}
+            </if>
+            <if test="templateAreas!=null and templateAreas!=''">
+                and template_areas
+                LIKE CONCAT(CONCAT('%',#{templateAreas}),'%')
+            </if>
+            <if test="templateFactory!=null and templateFactory!=''">
+                and template_factory
+                LIKE #{templateFactory}
+            </if>
+            <if test="templateStore!=null and templateStore!=''">
+                and template_store
+                LIKE CONCAT(CONCAT('%',#{templateStore}),'%')
+            </if>
+        </where>
+        ORDER BY template_ctime DESC
+    </select>
+
+    <select id="countTemplateStockInfoNum" resultType="Integer">
+        SELECT count(id)
+        FROM template_stock
+    </select>
+
+    <delete id="deleteTemplateStockByTemplateId" parameterType="java.lang.String">
+        DELETE
+        FROM template_stock
+        WHERE template_id=#{templateId}
+    </delete>
+
+    <delete id="deleteTemplateStockByStockId" parameterType="java.lang.Long">
+        DELETE
+        FROM template_stock
+        WHERE id=#{stockId}
+    </delete>
+
+</mapper>

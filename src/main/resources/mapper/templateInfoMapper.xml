@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.template.mapper.ITemplateInfoMapper">
+
+    <insert id="addTemplate" parameterType="TemplateInfo">
+        INSERT INTO template_info (template_id,template_series,template_norm,pieces_per_suit,template_type,
+                    template_signaturer,template_signature_time,template_color,template_ctime)
+        VALUES (#{templateId},#{templateSeries},#{templateNorm},#{piecesPerSuit},#{templateType},#{templateSignaturer},
+                #{templateSignatureTime},#{templateColor},#{templateCtime})
+    </insert>
+
+    <delete id="deleteTemplateByTemplateId" parameterType="TemplateInfo">
+        DELETE FROM template_info WHERE template_id=#{templateId}
+    </delete>
+
+    <update id="updateTemplateByTemplateId" parameterType="TemplateInfo">
+
+    </update>
+
+    <select id="listAllTemplatesOrByTemplateId" parameterType="java.lang.String" resultType="TemplateInfo">
+        SELECT *
+        FROM template_info
+        WHERE 1=1
+        <if test="templateId!=null and templateId!=''">
+            AND template_id=#{templateId}
+        </if>
+        ORDER BY template_signature_time DESC
+    </select>
+
+    <select id="findTemplateByTemplateInfoId" parameterType="TemplateInfo" resultType="TemplateInfo">
+        SELECT * FROM template_info WHERE template_id=#{templateId}
+    </select>
+
+</mapper>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.template.mapper.IUserInfoMapper">
+
+    <insert id="addUserInfo" parameterType="UserInfo">
+        INSERT INTO user_info (user_name,user_password,user_ctime)
+        VALUES (#{userName},#{userPassword},#{userCtime})
+    </insert>
+
+
+    <select id="findUserInfo" parameterType="UserInfo" resultType="UserInfo">
+        SELECT *
+        FROM user_info
+        WHERE user_name=#{userName} AND user_password=#{userPassword}
+    </select>
+
+    <select id="findUserInfoByUserId" parameterType="Integer" resultType="UserInfo">
+        SELECT *
+        FROM user_info
+        WHERE id=#{userId}
+    </select>
+
+    <select id="findUserInfoByUserName" parameterType="java.lang.String" resultType="Integer">
+        SELECT count(id)
+        FROM user_info
+        WHERE user_name=#{userName}
+    </select>
+
+    <select id="selectAllUserInfosOrByUserName" parameterType="UserInfo" resultType="UserInfo">
+        SELECT id,user_name,user_ctime,user_factory
+        FROM user_info
+        WHERE id!=#{id}
+        <if test="userName!=null and userName!=''">
+            AND user_name
+            LIKE CONCAT('%',#{userName},'%')
+        </if>
+        ORDER BY user_ctime DESC
+    </select>
+
+    <select id="countAllUserInfos" resultType="Integer">
+        SELECT count(id)
+        FROM user_info
+    </select>
+
+    <update id="updateUserInfoFactory" parameterType="UserInfo">
+        UPDATE user_info
+        SET user_factory=#{userFactory}
+        WHERE id=#{id}
+    </update>
+
+    <delete id="deleteUserInfoById" parameterType="int">
+        DELETE
+        FROM user_info
+        WHERE id=#{id}
+    </delete>
+</mapper>

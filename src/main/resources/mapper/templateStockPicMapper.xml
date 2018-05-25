@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.template.mapper.ITemplateStockPicMapper">
+
+    <insert id="addPic" parameterType="TemplateStockPicture">
+        INSERT INTO template_stock_picture (stock_id,picture_url,picture_ctime)
+        VALUES (#{stockId},#{pictureUrl},#{pictureCtime})
+    </insert>
+
+    <select id="listPics" parameterType="TemplateStockPicture" resultType="TemplateStockPicture">
+        SELECT *
+        FROM template_stock_picture
+        WHERE stock_id=#{stockId}
+    </select>
+
+    <delete id="deletePicByStockId" parameterType="java.lang.Long">
+        DELETE
+        FROM template_stock_picture
+        WHERE stock_id=#{stockId}
+    </delete>
+
+</mapper>
